@@ -35,7 +35,8 @@ Note: the command has been configured to run every 6hours, you can adjust accord
   - `sort_order` (optional): The sorting order (asc or desc).
   - `category` (optional): The category of the articles.
   - `search` (optional): Search query for filtering articles (`title`, `description`, `content`).
-  - `source` (optional): Filter articles by source (`news api`, `guardian`, `new york times`).
+  - `source` (optional): Filter articles by source.
+  - `platform` (optional): Filter articles by platform fetched from (`news api`, `guardian`, `new york times`).
 
   **Response:**
   - `success`: Indicates whether the request was successful.

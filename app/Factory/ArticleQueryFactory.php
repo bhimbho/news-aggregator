@@ -20,6 +20,7 @@ class ArticleQueryFactory
         return $this
             ->applySearchFilter($filters['search'] ?? null)
             ->applySourceFilter($filters['source'] ?? null)
+            ->applyPlatformFilter($filters['platform'] ?? null)
             ->applyCategoryFilter($filters['category'] ?? null)
             ->applyDateRangeFilter(
                 isset($filters['from_date']) ? Carbon::parse($filters['from_date'])->startOfDay() : null,
@@ -44,7 +45,15 @@ class ArticleQueryFactory
     private function applySourceFilter(?string $source): self
     {
         if ($source) {
-            $this->query->where('platform', $source);
+            $this->query->where('source', $source);
+        }
+        return $this;
+    }
+
+    private function applyPlatformFilter(?string $platform): self
+    {
+        if ($platform) {
+            $this->query->where('platform', $platform);
         }
         return $this;
     }

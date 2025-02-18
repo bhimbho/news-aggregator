@@ -18,11 +18,7 @@ class ArticleController extends Controller
     public function index(ArticleRequest $request)
     {
         $query = $this->queryFactory->makeQuery($request->validated());
-        $articles = Cache::remember('articles.' . md5(json_encode($request->validated())), 
-            now()->addMinutes(10), function() use ($query, $request) {
-                return $query->paginate($request->input('per_page', 15));
-            });
-
+        $articles = $query->paginate($request->input('per_page', 15));
         return response()->json([
             'status' => 'success',
             'message' => 'Articles retrieved successfully',

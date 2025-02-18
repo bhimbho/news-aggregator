@@ -24,12 +24,13 @@ class ArticleRequest extends FormRequest
         return 
             [
                 'search' => 'nullable|string|min:2',
-                'source' => 'nullable|string|in:news api,guardian,new york times',
+                'source' => 'nullable|string',
                 'category' => 'nullable|string',
                 'from_date' => 'nullable|date',
                 'to_date' => 'nullable|date|after_or_equal:from_date',
                 'sort_by' => 'nullable|string|in:publishedAt,title',
                 'sort_direction' => 'nullable|string|in:asc,desc',
+                'platform' => 'nullable|string|in:news api,guardian,new york times',
                 'per_page' => 'nullable|integer|min:1|max:50'
             ];
     }
