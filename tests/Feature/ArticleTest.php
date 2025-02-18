@@ -12,11 +12,6 @@ use Tests\TestCase;
 class ProcessArticleTest extends TestCase
 {
     use RefreshDatabase;
-    public function setUp(): void
-    {
-        parent::setUp();
-        Artisan::call('cache:clear');
-    }
     /**
      * A basic feature test example.
      */

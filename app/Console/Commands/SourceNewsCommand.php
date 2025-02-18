@@ -30,8 +30,8 @@ class SourceNewsCommand extends Command implements Isolatable
     {
         parent::__construct();
         $this->newsService = [
-            // app(NewsApiService::class),
-            // app(GuardianApiService::class),
+            app(NewsApiService::class),
+            app(GuardianApiService::class),
             app(NYTimesApiService::class),
         ];
     }
