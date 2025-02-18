@@ -15,14 +15,14 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('type');
             $table->string('source')->nullable();
-            $table->string('author')->nullable();
+            $table->longText('author')->nullable();
             $table->mediumText('title');
             $table->mediumText('description')->nullable();
             $table->mediumText('url');
             $table->mediumText('urlToImage')->nullable();
             $table->longText('content')->nullable();
             $table->string('category')->nullable();
-            $table->timestamp('publishedAt');
+            $table->dateTime('publishedAt');
             $table->string('platform');
             $table->timestamps();
         });
