@@ -5,7 +5,7 @@ This documentation provides information about the implementation of New Aggregat
 
 ### Step to Setup
 1. Clone the repository:
-`git clone https://github.com/bhimbho/new-aggregator.git`
+`git clone https://github.com/bhimbho/news-aggregator.git`
 2. Install dependencies:
 3. For Docker users, I have added laravel sail to the project.
 run `sail up build` then `sail up -d`
