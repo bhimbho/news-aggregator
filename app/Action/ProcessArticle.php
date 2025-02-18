@@ -3,6 +3,7 @@ namespace App\Action;
 
 use App\Models\Article;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -25,6 +26,7 @@ class ProcessArticle
             Log::error($e->getMessage());
             print "error occurred while processing article\n";
         }
+        Cache::clear();
     }
 
     private function saveArticle(array $article): void

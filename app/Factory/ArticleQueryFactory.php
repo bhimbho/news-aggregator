@@ -18,14 +18,14 @@ class ArticleQueryFactory
     public function makeQuery(array $filters): Builder
     {
         return $this
-            // ->applySearchFilter($filters['search'] ?? null)
-            ->applySourceFilter('guardian')
-            // ->applyCategoryFilter($filters['category'] ?? null)
-            // ->applyDateRangeFilter(
-            //     isset($filters['from_date']) ? Carbon::parse($filters['from_date'])->startOfDay() : null,
-            //     isset($filters['to_date']) ? Carbon::parse($filters['to_date'])->endOfDay() : null
-            // )
-            // ->applySorting($filters['sort_by'] ?? 'publishedAt', $filters['sort_direction'] ?? 'desc')
+            ->applySearchFilter($filters['search'] ?? null)
+            ->applySourceFilter($filters['source'] ?? null)
+            ->applyCategoryFilter($filters['category'] ?? null)
+            ->applyDateRangeFilter(
+                isset($filters['from_date']) ? Carbon::parse($filters['from_date'])->startOfDay() : null,
+                isset($filters['to_date']) ? Carbon::parse($filters['to_date'])->endOfDay() : null
+            )
+            ->applySorting($filters['sort_by'] ?? 'publishedAt', $filters['sort_direction'] ?? 'desc')
             ->getQuery();
     }
 
@@ -44,7 +44,7 @@ class ArticleQueryFactory
     private function applySourceFilter(?string $source): self
     {
         if ($source) {
-            $this->query->whereLike('platform', $source);
+            $this->query->where('platform', $source);
         }
         return $this;
     }
