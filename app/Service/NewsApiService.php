@@ -1,0 +1,58 @@
+<?php
+namespace App\Service;
+
+use App\Action\LatestNewsArticle;
+use App\Action\ProcessArticle;
+use App\Enum\PlatformEnum;
+use App\Models\Article;
+use App\Service\Interface\NewsService;
+use Carbon\Carbon;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
+
+class NewsApiService implements NewsService 
+{
+    public function getNews(string $keyword): void
+    {
+        $lastArticle = app(LatestNewsArticle::class)->execute(PlatformEnum::NEWSAPI);
+        $response = $this->fetchFromApi($keyword, $lastArticle?->publishedAt);
+
+        if ($response->successful()) {
+            print "-- News from News API Fetched Successfully--\n";
+            $articles = $this->transform($response);
+            app(ProcessArticle::class)->execute($articles);
+        } else {
+            print "-- News from News API Fetched Failed--\n";
+        }
+    }
+
+    public function fetchFromApi(string $keyword, string|null $lastDate): Response
+    {
+        $parameters = [
+            'q' => $keyword,
+            'apiKey' => env('NEWS_API_KEY'),
+        ];
+        if ($lastDate) {
+            $parameters['from'] = Carbon::parse($lastDate)->addMinutes(2)->toIso8601String();
+        }
+
+        return Http::get('https://newsapi.org/v2/everything', $parameters);
+    }
+
+    public function transform(Response $response): array 
+    {
+        return collect($response->json()['articles'])
+        ->map(fn ($article) => [
+            'type' => 'article',
+            'source' => $article['source']['name'],
+            'author' => $article['author'] ?? null,
+            'title' => $article['title'],
+            'description' => $article['description'],
+            'url' => $article['url'],
+            'urlToImage' => $article['urlToImage'] ?? null,
+            'publishedAt' => Carbon::parse($article['publishedAt'])->format('Y-m-d H:i:s'),
+            'content' => $article['content'],
+            'platform' => PlatformEnum::NEWSAPI,
+        ])->toArray();
+    }
+}
