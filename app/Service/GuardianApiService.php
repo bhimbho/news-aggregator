@@ -4,6 +4,7 @@ namespace App\Service;
 use App\Action\LatestNewsArticle;
 use App\Action\ProcessArticle;
 use App\Enum\PlatformEnum;
+use App\Jobs\ProcessNewsArticlesJob;
 use App\Service\Interface\NewsService;
 use Carbon\Carbon;
 use Illuminate\Http\Client\Response;
@@ -34,9 +35,7 @@ class GuardianApiService implements NewsService
                     print "-- Processing Guardian API page {$currentPage} of {$totalPages} --\n";
                     
                     $articles = $this->transform($response);
-                        
-                    $this->articleProcessor->execute($articles);
-                    
+                    ProcessNewsArticlesJob::dispatch($articles);                    
                     $currentPage++;
                 }
             } while ($currentPage <= $totalPages);

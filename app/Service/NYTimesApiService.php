@@ -5,6 +5,7 @@ use App\Action\LatestNewsArticle;
 use App\Action\ProcessArticle;
 use App\Enum\NewsType;
 use App\Enum\PlatformEnum;
+use App\Jobs\ProcessNewsArticlesJob;
 use App\Service\Interface\NewsService;
 use Carbon\Carbon;
 use Illuminate\Http\Client\Response;
@@ -20,7 +21,7 @@ class NYTimesApiService implements NewsService
         if ($response->successful()) {
             print "-- News from New York Times API Fetched Successfully--\n";
             $articles = $this->transform($response);
-            app(ProcessArticle::class)->execute($articles,);
+            ProcessNewsArticlesJob::dispatch($articles);
         }
     }
 
@@ -29,7 +30,7 @@ class NYTimesApiService implements NewsService
         $parameters = [
             'api-key' => env('NEW_YORK_TIMES_KEY'),
             'q' => $keyword,
-            'sort' => 'newest',
+            'sort' => 'oldest',
         ];
         if ($lastDate) {
             $parameters['begin_date'] = Carbon::parse($lastDate)->format('Ymd');

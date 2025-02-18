@@ -4,6 +4,7 @@ namespace App\Service;
 use App\Action\LatestNewsArticle;
 use App\Action\ProcessArticle;
 use App\Enum\PlatformEnum;
+use App\Jobs\ProcessNewsArticlesJob;
 use App\Models\Article;
 use App\Service\Interface\NewsService;
 use Carbon\Carbon;
@@ -20,7 +21,7 @@ class NewsApiService implements NewsService
         if ($response->successful()) {
             print "-- News from News API Fetched Successfully--\n";
             $articles = $this->transform($response);
-            app(ProcessArticle::class)->execute($articles);
+            ProcessNewsArticlesJob::dispatch($articles);
         } else {
             print "-- News from News API Fetched Failed--\n";
         }
