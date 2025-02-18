@@ -42,7 +42,7 @@ class NYTimesApiService implements NewsService
     {
         return collect($response->json()['response']['docs'])
         ->map(fn ($article) => [
-            'platform' => PlatformEnum::NYT,
+            'platform' => PlatformEnum::NYT->value,
             'type' => $article['document_type'] ?? 'article',
             'source' => $article['source'],
             'author' => $article['byline']['original'] ?? null,

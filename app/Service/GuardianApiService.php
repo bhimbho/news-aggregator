@@ -73,7 +73,7 @@ class GuardianApiService implements NewsService
             'publishedAt' => Carbon::parse($article['webPublicationDate'])->format('Y-m-d H:i:s'),
             'category' => $article['sectionName'],
             'content' => $article['fields']['body'],
-            'platform' => PlatformEnum::GUARDIAN,
+            'platform' => PlatformEnum::GUARDIAN->value,
             'type' => $article['type'],
             'source' => $article['fields']['publication'],
         ])->toArray();

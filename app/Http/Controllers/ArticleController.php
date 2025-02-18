@@ -2,64 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Article;
-use Illuminate\Http\Request;
+use App\Factory\ArticleQueryFactory;
+use App\Http\Requests\ArticleRequest;
 
 class ArticleController extends Controller
 {
+    public function __construct(private ArticleQueryFactory $queryFactory)
+    {
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(ArticleRequest $request)
     {
-        //
-    }
+        $query = $this->queryFactory->makeQuery($request->validated());
+        
+        $articles = cache()->remember('articles.' . $request->getRequestUri(), now()->addHour(), function() use ($query, $request) {
+            return $query->paginate($request->input('per_page', 15));
+        });
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Article $article)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Article $article)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Article $article)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Article $article)
-    {
-        //
+        return response()->json([
+            'data' => $articles->items(),
+            'meta' => [
+                'current_page' => $articles->currentPage(),
+                'last_page' => $articles->lastPage(),
+                'per_page' => $articles->perPage(),
+                'total' => $articles->total()
+            ]
+        ]);
     }
 }

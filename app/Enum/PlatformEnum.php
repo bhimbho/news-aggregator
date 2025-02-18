@@ -4,8 +4,8 @@ namespace App\Enum;
 
 enum PlatformEnum: string
 {
-    case NEWSAPI = 'newsapi';
+    case NEWSAPI = 'news api';
     case GUARDIAN = 'guardian';
-    case NYT = 'new-york-times';
+    case NYT = 'new york times';
 }
 

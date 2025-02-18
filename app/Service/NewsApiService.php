@@ -52,7 +52,7 @@ class NewsApiService implements NewsService
             'urlToImage' => $article['urlToImage'] ?? null,
             'publishedAt' => Carbon::parse($article['publishedAt'])->format('Y-m-d H:i:s'),
             'content' => $article['content'],
-            'platform' => PlatformEnum::NEWSAPI,
+            'platform' => PlatformEnum::NEWSAPI->value,
         ])->toArray();
     }
 }
