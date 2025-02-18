@@ -6,8 +6,9 @@ use App\Service\GuardianApiService;
 use App\Service\NewsApiService;
 use App\Service\NYTimesApiService;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\Isolatable;
 
-class SourceNewsCommand extends Command
+class SourceNewsCommand extends Command implements Isolatable
 {
     /**
      * The name and signature of the console command.

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Factory\ArticleQueryFactory;
 use App\Http\Requests\ArticleRequest;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 
 class ArticleController extends Controller
@@ -23,6 +24,8 @@ class ArticleController extends Controller
             });
 
         return response()->json([
+            'status' => 'success',
+            'message' => 'Articles retrieved successfully',
             'data' => $articles->items(),
             'meta' => [
                 'current_page' => $articles->currentPage(),
@@ -30,6 +33,6 @@ class ArticleController extends Controller
                 'per_page' => $articles->perPage(),
                 'total' => $articles->total()
             ]
-        ]);
+        ], Response::HTTP_OK);
     }
 }
