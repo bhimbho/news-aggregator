@@ -17,7 +17,9 @@ run `sail up build` then `sail up -d`
 `sail artisan migrate` or `php artisan migrate`
 5. Insert Api Keys for the news platform in the env file, then run
 `sail artisan scheduler:run`
-Note: the command has been configured to run every 6hours, you can adjust according to your preference and data size
+Note: the command has been configured to run every 5seconds (for test purposes), you can adjust according to your preference and data size
+6. Run the queue worker:
+`sail artisan queue:work` or `php artisan queue:work`
 
 ### For cron-tab job use:
 `* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1`
